@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6th Semester Marks - Civil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f2f2f2;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .result {
+      margin-top: 1.5rem;
+    }
+    .result p {
+      background: #e7f3ff;
+      padding: 0.5rem;
+      border-left: 5px solid #007bff;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>6th Semester Marks - Civil Engineering</h2>
+    <input type="text" id="pinInput" placeholder="Enter Student PIN (e.g., 22005-CE-035)" />
+    <div id="output" class="result"></div>
+  </div>
+
+  <script>
+    let studentData = [];
+
+    // Load data.json
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        studentData = data;
+      })
+      .catch(err => {
+        document.getElementById('output').innerHTML = '<p class="error">Failed to load data.</p>';
+      });
+
+    document.getElementById('pinInput').addEventListener('change', function() {
+      const pin = this.value.trim();
+      const student = studentData.find(s => s.PIN === pin);
+
+      const output = document.getElementById('output');
+      if (student) {
+        output.innerHTML = `
+          <p><strong>Name:</strong> ${student.NAME}</p>
+          <p><strong>MID1:</strong> ${student.MID1}</p>
+          <p><strong>MID2:</strong> ${student.MID2}</p>
+          <p><strong>Internal:</strong> ${student.INTERNAL}</p>
+          <p><strong>Semester:</strong> ${student.SEMESTER}</p>
+          <p><strong>Total:</strong> ${student.TOTAL}</p>
+          <p><strong>Grade:</strong> ${student.GRADE}</p>
+          <p><strong>GPA:</strong> ${student.GPA}</p>
+        `;
+      } else {
+        output.innerHTML = '<p class="error">No data found for this PIN.</p>';
+      }
+    });
+  </script>
+</body>
+</html>
